@@ -145,9 +145,11 @@ function CardFront({ data, shinePct, now }) {
 // --- Card back face ---
 function CardBack({ data, shinePct }) {
   const c = data.colors
-  const qrValue = data.website
-    ? data.website.startsWith('http') ? data.website : `https://${data.website}`
-    : 'https://example.com'
+  const [origin, setOrigin] = useState('')
+  useEffect(() => {
+    setOrigin(window.location.origin)
+  }, [])
+  const qrValue = origin ? `${origin}/api/cv` : '/api/cv'
 
   const vars = {
     '--card-bg': c.cardBg,
@@ -207,8 +209,8 @@ function CardBack({ data, shinePct }) {
             </div>
             <div className="flex min-w-0 flex-1 flex-col gap-1.5 pt-px">
               <div>
-                <p className="mb-0.5 font-mono text-[8px] tracking-[0.18em] text-[var(--meta-color)]">SCAN TO VISIT</p>
-                <p className="overflow-hidden font-mono text-[9px] leading-[1.3] font-semibold tracking-[0.03em] text-ellipsis whitespace-nowrap text-[var(--accent)]">{data.website}</p>
+                <p className="mb-0.5 font-mono text-[8px] tracking-[0.18em] text-[var(--meta-color)]">SCAN TO DOWNLOAD CV</p>
+                <p className="overflow-hidden font-mono text-[9px] leading-[1.3] font-semibold tracking-[0.03em] text-ellipsis whitespace-nowrap text-[var(--accent)]">Mounir_Bella_CV.pdf</p>
               </div>
               {data.email && (
                 <div>
@@ -318,7 +320,7 @@ export default function BadgeCard({ data }) {
     return { x: rect.width * 0.5, y: ANCHOR_Y }
   }, [])
 
-  const drawRope = useCallback((data) => {
+  const syncCanvasSize = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas || !containerRef.current) return
     const ctx = canvas.getContext('2d')
@@ -330,6 +332,14 @@ export default function BadgeCard({ data }) {
     canvas.style.width = `${rect.width}px`
     canvas.style.height = `${rect.height}px`
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  }, [])
+
+  const drawRope = useCallback((data) => {
+    const canvas = canvasRef.current
+    if (!canvas || !containerRef.current) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    const rect = containerRef.current.getBoundingClientRect()
     ctx.clearRect(0, 0, rect.width, rect.height)
 
     const anchor = getAnchor()
@@ -339,7 +349,7 @@ export default function BadgeCard({ data }) {
     const midY = anchor.y + (cardTopY - anchor.y) * 0.5
 
     // --- Sample points along the Bezier curve for the strap ---
-    const steps = 80
+    const steps = 44
     const pts = []
     for (let i = 0; i <= steps; i++) {
       const t = i / steps
@@ -401,8 +411,7 @@ export default function BadgeCard({ data }) {
       ctx.lineTo(p.x - nx * strapHalf, p.y - ny * strapHalf)
     }
     ctx.closePath()
-    ctx.fillStyle = 'rgba(0,0,0,0.45)'
-    ctx.filter = 'blur(4px)'
+    ctx.fillStyle = 'rgba(0,0,0,0.3)'
     ctx.fill()
     ctx.restore()
 
@@ -473,7 +482,9 @@ export default function BadgeCard({ data }) {
       const p = sampleAt(d)
       if (logoImg) {
         const iconW = iconH * (logoImg.naturalWidth / logoImg.naturalHeight)
+        if (data.logoInvert) ctx.filter = 'invert(1) brightness(1.15)'
         ctx.drawImage(logoImg, p.x - iconW / 2, p.y - iconH / 2, iconW, iconH)
+        if (data.logoInvert) ctx.filter = 'none'
       } else {
         ctx.fillStyle = accentColor
         ctx.beginPath()
@@ -504,10 +515,9 @@ export default function BadgeCard({ data }) {
 
     // Drop shadow for entire clip assembly
     ctx.save()
-    ctx.fillStyle = 'rgba(0,0,0,0.55)'
-    ctx.filter = 'blur(4px)'
+    ctx.fillStyle = 'rgba(0,0,0,0.35)'
     ctx.beginPath()
-    ctx.roundRect(-10, 0, 20, 26, 4)
+    ctx.roundRect(-11, 1, 22, 28, 5)
     ctx.fill()
     ctx.restore()
 
@@ -606,13 +616,16 @@ export default function BadgeCard({ data }) {
     if (!containerRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
     pos.current = { x: rect.width / 2 - CARD_W / 2, y: ANCHOR_Y + STRAP_LENGTH }
+    syncCanvasSize()
     hasMounted.current = true
     rafId.current = requestAnimationFrame(animate)
+    window.addEventListener('resize', syncCanvasSize)
     return () => {
       cancelAnimationFrame(rafId.current)
       cancelAnimationFrame(flipRaf.current)
+      window.removeEventListener('resize', syncCanvasSize)
     }
-  }, [animate])
+  }, [animate, syncCanvasSize])
 
   useEffect(() => {
     if (cardRef.current) {

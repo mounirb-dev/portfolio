@@ -74,7 +74,7 @@ export default function Page() {
                 onClick={() => goTo(i)}
                 aria-label={preset.company}
                 title={preset.company}
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-200 ${
+                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-all duration-200 ${
                   isActive
                     ? 'scale-110 border-white/30 bg-white/12 opacity-100'
                     : 'border-white/8 bg-white/4 opacity-45 hover:opacity-80'
@@ -85,11 +85,11 @@ export default function Page() {
                   <img
                     src={preset.logoImage}
                     alt=""
-                    className={`h-4 w-4 object-contain ${preset.logoInvert ? '[filter:invert(1)_brightness(1.15)]' : ''}`}
+                    className={`h-6 w-6 object-contain ${preset.logoInvert ? '[filter:invert(1)_brightness(1.15)]' : ''}`}
                     draggable={false}
                   />
                 ) : (
-                  <span className="h-2 w-2 rounded-full" style={{ background: preset.colors.accentColor }} />
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: preset.colors.accentColor }} />
                 )}
               </button>
             )
