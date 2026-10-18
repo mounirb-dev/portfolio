@@ -6,23 +6,6 @@ import './globals.css'
 export const metadata = {
   title: 'Interactive 3D ID Card',
   description: 'Interactive 3D event badge with physics-based lanyard, built with React Three Fiber',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
 }
 
 export default function RootLayout({ children }) {
