@@ -1,6 +1,6 @@
 const CONTACT = {
   name: 'Mounir Bella',
-  email: 'mouunirbella32@gmail.com',
+  email: 'mounirbella32@gmail.com',
   phone: '+34 631 10 69 94',
   location: 'Bergara, España',
   venue: 'Gipuzkoa',
@@ -16,6 +16,8 @@ const BRANDS = [
     colors: { cardBg: '#0a1512', accentColor: '#3ECF8E', nameColor: '#ffffff', roleColor: '#a9d9c3', metaColor: '#6f9c8a', footerBg: '#081310', footerText: '#ffffff', ringColor: '#6f9c8a' } },
   { company: 'JavaScript', tagline: 'The language of the web.', website: 'developer.mozilla.org', eventCode: 'JS', logoImage: '/logos/javascript.svg',
     colors: { cardBg: '#17170d', accentColor: '#F7DF1E', nameColor: '#ffffff', roleColor: '#d9d6ae', metaColor: '#9a9873', footerBg: '#100f09', footerText: '#ffffff', ringColor: '#9a9873' } },
+  { company: 'TypeScript', tagline: 'JavaScript with syntax for types.', website: 'typescriptlang.org', eventCode: 'TS', logoImage: '/logos/typescript.svg',
+    colors: { cardBg: '#0b1420', accentColor: '#3178C6', nameColor: '#ffffff', roleColor: '#a9c6e8', metaColor: '#6f8fb3', footerBg: '#08101a', footerText: '#ffffff', ringColor: '#6f8fb3' } },
   { company: 'HTML5', tagline: 'Structure of the web.', website: 'developer.mozilla.org', eventCode: 'HTM', logoImage: '/logos/html5.svg',
     colors: { cardBg: '#1c1210', accentColor: '#E34F26', nameColor: '#ffffff', roleColor: '#d9b8ae', metaColor: '#9a7d73', footerBg: '#130c0b', footerText: '#ffffff', ringColor: '#9a7d73' } },
   { company: 'CSS', tagline: 'Style for the web.', website: 'developer.mozilla.org', eventCode: 'CSS', logoImage: '/logos/css.svg',
